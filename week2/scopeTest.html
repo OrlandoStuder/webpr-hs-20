@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scope Tests</title>
+</head>
+<body>
+    <script>
+
+
+        let x = 1;
+        document.writeln(x === 1);
+
+        function foo() {
+            const x = 2;
+            document.writeln(x === 2);
+        }
+
+        // IIFE: immediately invoked function expression
+        ( () => { let x = 2; document.writeln(x === 2) } ) ()
+
+        foo();
+        document.writeln(x === 1);
+
+
+        // Lambda Kalkül
+        const id    = x => x;       // Funktion die 1 Parameter entgegen nimmt und diesen zurück gibt
+        const konst = x => y => x;  // Funktion die 2 Parameter entgegen nimmt, aber nur den 1. zurück gibt
+
+        document.writeln( id(id) === id );  // Vergleicht die Funktion: id === id
+        document.writeln( konst(id)(undefined) === id);  // gibt nur den 1. Parameter zurück, also "id"
+
+
+        // Funktion "snd" umformen mit "id" und "konst", damit 2. Parameter zurück gegeben wird
+        // const snd = x => y => y;        // y zu Argument machen
+        // const snd = x => y => id(y);    // Eta Reduktion (y kürzen)
+        // const snd = x => id;            // "konst (id) (x)" einsetzen, da dies "id" zurückgibt und somit gleich ist
+        // const snd = x => konst (id) (x);    // x durch Eta-Reduktion kürzen
+        const snd = konst (id);
+
+        document.writeln( snd(undefined)(id) === id );
+
+    </script>
+</body>
+</html>
+
